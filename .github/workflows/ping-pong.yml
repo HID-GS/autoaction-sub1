@@ -14,7 +14,9 @@ jobs:
         run: |
           echo "${{ github.event.action }}" && \
           ls -la && \
-          pwd
+          ls -la .. && \
+          pwd && \
+          env | sort
       - name: PING - Dispatch initiating repository event
         if: github.event.action != 'pong'
         run: |
