@@ -21,7 +21,7 @@ jobs:
     - name: APOP Notify Parent
       if: ${{ github.event.pull_request.merged }} == 'true'
       run: |
-        echo "pull request succeeded, would have taken action here"; \
+        echo "pull request succeeded, will take action here"; \
         curl -s -X POST https://api.github.com/repos/${{ github.event.client_payload.repository }}/dispatches \
         -H 'Accept: application/vnd.github.v3+json' \
         -u ${{ secrets.ACCESS_TOKEN }} \
