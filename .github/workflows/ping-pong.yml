@@ -21,7 +21,8 @@ jobs:
           ls -la .. && \
           pwd && \
           env | sort && \
-          ls -la $GITHUB_PATH
+          ls -la $GITHUB_PATH && \
+          echo "${{ github }}"
       - name: PING - Dispatch initiating repository event
         if: github.event.action != 'pong'
         run: |
