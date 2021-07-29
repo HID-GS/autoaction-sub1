@@ -1,15 +1,7 @@
 name: Auto PR on Parent Repo Dispatcher
 
 on:
-  push:
-    branches:
-      - main
-      - master
   pull_request:
-    branches:
-      - main
-      - master
-    types: [ closed ]
 
 jobs:
   auto-pr:
@@ -17,9 +9,14 @@ jobs:
     steps:
     - name: Always run
       run: |
-        echo "${{ github.event.pull_request.merged }}"
-        echo "${{ github.event.pull_request.merged }}"
-        env | sort
+        echo "event ${GITHUB_EVENT_NAME}"
+        echo "state ${{ github.event.pull_request.state }}"
+        echo "number ${{ github.event.pull_request.number }}"
+        echo "sha ${{ github.event.pull_request.merged_commit_sha }}"
+        echo "title ${{ github.event.pull_request.title }}"
+        echo "merged ${{ github.event.pull_request.merged }}"
+        echo "commits ${{ github.event.pull_request.commits }}"
+        echo "ref ${{ github.event.pull_request.base.ref }}"
     - name: Auto PR On Parent
       if: github.event.pull_request.merged == 'true'
       run: |
