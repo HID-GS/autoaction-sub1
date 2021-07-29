@@ -19,7 +19,7 @@ jobs:
         echo "commits ${{ github.event.pull_request.commits }}"
         echo "ref ${{ github.event.pull_request.base.ref }}"
     - name: Auto PR On Parent
-      if: github.event.pull_request.merged == 'true'
+      if: ${{ github.event.pull_request.merged }} == 'true'
       run: |
         echo "pull request succeeded, would have taken action here"
 
