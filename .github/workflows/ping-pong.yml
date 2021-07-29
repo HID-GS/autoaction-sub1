@@ -13,7 +13,8 @@ jobs:
       - name: always run
         run: |
           echo "${{ github.event.action }}" && \
-          ls -la
+          ls -la && \
+          pwd
       - name: PING - Dispatch initiating repository event
         if: github.event.action != 'pong'
         run: |
