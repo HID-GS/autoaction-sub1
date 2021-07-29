@@ -2,6 +2,7 @@ name: Auto PR on Parent Repo Dispatcher
 
 on:
   pull_request:
+    types: [ closed ]
 
 jobs:
   auto-pr:
