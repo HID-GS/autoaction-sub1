@@ -10,6 +10,10 @@ jobs:
   ping-pong:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
       - name: always run
         run: |
           echo "${{ github.event.action }}" && \
