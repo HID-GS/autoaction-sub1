@@ -25,6 +25,7 @@ jobs:
         run: |
           echo "PONG received from '${{ github.event.client_payload.repository }}'" && \
           curl -X POST https://api.github.com/repos/hid-gs/autoaction-main/dispatches \
-          -H 'Accept: application/vnd.github.everest-preview+json' \
+          -H 'Accept: application/vnd.github.v3+json' \
           -u ${{ secrets.ACCESS_TOKEN }} \
-        --data '{"event_type": "ack", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+          --data '{"event_type": "ack", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'" }}'
+
