@@ -1,4 +1,4 @@
-name: Auto PR on Parent Repo Dispatcher
+name: APoP Dispatcher
 
 on:
   pull_request:
