@@ -22,7 +22,7 @@ jobs:
         echo "commits ${{ github.event.pull_request.commits }}"
         echo "ref ${{ github.event.pull_request.base.ref }}"
     - name: APOP Notify Parent
-      if: ${{ github.event.pull_request.merged }} == 'true'
+      if: ${{ github.event.pull_request.merged }} == 'true' && ${{ github.event.pull_Request.base.ref }} == 'main'
       run: |
         REPOSHORT="$(echo $GITHUB_REPOSITORY | sed 's#.*/##g')"
         echo "pull request succeeded, will take action here"; \
