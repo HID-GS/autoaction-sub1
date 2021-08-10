@@ -1,4 +1,4 @@
-name: APoP Dispatcher
+name: APRoP Dispatcher
 
 on:
   pull_request:
