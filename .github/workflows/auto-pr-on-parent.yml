@@ -21,7 +21,7 @@ jobs:
         echo "merged ${{ github.event.pull_request.merged }}"
         echo "commits ${{ github.event.pull_request.commits }}"
         echo "ref ${{ github.event.pull_request.base.ref }}"
-    - name: APOP Notify Parent
+    - name: APRoP Notify Parent
       if: ${{ github.event.pull_request.merged }} == 'true' && ${{ github.event.pull_request.base.ref }} == 'main'
       run: |
         REPOSHORT="$(echo $GITHUB_REPOSITORY | sed 's#.*/##g')"
@@ -29,5 +29,5 @@ jobs:
         curl -s -X POST https://api.github.com/repos/hid-gs/autoaction-main/dispatches \
         -H 'Accept: application/vnd.github.v3+json' \
         -u ${{ secrets.ACCESS_TOKEN }} \
-        --data '{"event_type": "apop-pr-merged", "client_payload": { "repository": "'"$REPOSHORT"'", "sha": "'"$GITHUB_SHA"'"     }}'
+        --data '{"event_type": "aprop-pr-merged", "client_payload": { "repository": "'"$REPOSHORT"'", "sha": "'"$GITHUB_SHA"'"     }}'
 
