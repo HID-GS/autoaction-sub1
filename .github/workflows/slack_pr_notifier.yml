@@ -38,7 +38,7 @@ jobs:
                 \"type\":\"button\",
                 \"text\":{
                   \"type\":\"plain_text\",
-                  \"text\":\"View PRs\",
+                  \"text\":\"View PR\",
                   \"emoji\":true
                 },
                 \"value\":\"click_me_pull\",
