@@ -12,7 +12,8 @@ jobs:
         SLACK_URL: ${{ secrets.SLACK_URL }}
       run: |
         env | sort
-        PR_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pulls"
+        PR=$(echo ${GITHUB_REF} | sed 's#refs/pull/\([0-9]*\)/merge#\1#g')
+        PR_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}"
 
         if [ "${SLACK_URL:-UNDEFINED}" == "UNDEFINED" ]; then
           echo "missing slack url variable"
