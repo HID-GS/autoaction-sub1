@@ -24,7 +24,7 @@ jobs:
         echo "merged: ${{ github.event.pull_request.merged }}"
         echo "base: ${{ github.event.pull_request.base.ref }}"
     - name: APRoP Notify Parent
-      if: github.event.pull_request.merged == 'true' && github.event.pull_request.base.ref == 'main'
+      if: ${{ github.event.pull_request.merged == 'true' && github.event.pull_request.base.ref == 'main' }}
       run: |
         REPOSHORT="$(echo $GITHUB_REPOSITORY | sed 's#.*/##g')"
         echo "pull request succeeded, will take action here"; \
