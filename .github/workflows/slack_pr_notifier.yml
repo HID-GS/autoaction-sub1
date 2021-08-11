@@ -1,0 +1,13 @@
+name: Slack PR Notifier
+
+on:
+  pull_request:
+
+jobs:
+  slack-pr-notify:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Notify via Slack
+      run: |
+        env | sort
+
