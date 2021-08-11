@@ -21,6 +21,8 @@ jobs:
         echo "merged ${{ github.event.pull_request.merged }}"
         echo "commits ${{ github.event.pull_request.commits }}"
         echo "ref ${{ github.event.pull_request.base.ref }}"
+        echo "merged: ${{ github.event.pull_request.merged }}"
+        echo "base: ${{ github.event.pull_request.base.ref }}"
     - name: APRoP Notify Parent
       if: ${{ github.event.pull_request.merged }} == 'true' && ${{ github.event.pull_request.base.ref }} == 'main'
       run: |
