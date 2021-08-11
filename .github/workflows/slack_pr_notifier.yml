@@ -13,7 +13,7 @@ jobs:
       run: |
         env | sort
         PR=$(echo ${GITHUB_REF} | sed 's#refs/pull/\([0-9]*\)/merge#\1#g')
-        PR_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}"
+        PR_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}/files#submit-review"
 
         if [ "${SLACK_URL:-UNDEFINED}" == "UNDEFINED" ]; then
           echo "missing slack url variable"
@@ -38,7 +38,7 @@ jobs:
                 \"type\":\"button\",
                 \"text\":{
                   \"type\":\"plain_text\",
-                  \"text\":\"View PR\",
+                  \"text\":\"Review PR\",
                   \"emoji\":true
                 },
                 \"value\":\"click_me_pull\",
