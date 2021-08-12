@@ -7,6 +7,8 @@ jobs:
   slack-pr-notify:
     runs-on: ubuntu-latest
     steps:
+    - name: Dump context
+      uses: crazy-max/ghaction-dump-context@v1
     - name: Notify via Slack
       env:
         SLACK_URL: ${{ secrets.SLACK_URL }}
