@@ -34,7 +34,7 @@ jobs:
               \"type\":\"section\",
               \"text\":{
                 \"type\":\"mrkdwn\",
-                \"text\":\"New PR created on $GITHUB_REPOSITORY by $GITHUB_ACTOR\"
+                \"text\":\"New PR created on $GITHUB_REPOSITORY by $GITHUB_ACTOR on branch $GITHUB_HEAD_REF\"
                 },
               \"accessory\":{
                 \"type\":\"button\",
