@@ -28,7 +28,7 @@ jobs:
       run: |
         REPOSHORT="$(echo $GITHUB_REPOSITORY | sed 's#.*/##g')"
         echo "pull request succeeded, will take action here"; \
-        curl -s -X POST https://api.github.com/repos/hid-gs/autoaction-main/dispatches \
+        curl -s -X POST https://api.github.com/repos/hid-gs/${{ secrets.WA_PARENT_REPO }}/dispatches \
         -H 'Accept: application/vnd.github.v3+json' \
         -u ${{ secrets.ACCESS_TOKEN }} \
         --data '{"event_type": "aprop-pr-merged", "client_payload": { "repository": "'"$REPOSHORT"'", "sha": "'"$GITHUB_SHA"'"     }}'
