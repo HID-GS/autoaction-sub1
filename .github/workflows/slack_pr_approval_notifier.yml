@@ -1,0 +1,60 @@
+name: Slack PR Approval Notifier
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+
+jobs:
+  slack-pr-approval-notify:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dump context
+      uses: crazy-max/ghaction-dump-context@v1
+    - name: Notify via Slack
+      env:
+        SLACK_URL: ${{ secrets.SLACK_URL }}
+      run: |
+        env | sort
+        PR=$(echo ${GITHUB_REF} | sed 's#refs/pull/\([0-9]*\)/merge#\1#g')
+        PR_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}/files#submit-review"
+        PR_REBASE_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}"
+        PR_PARENT=${{ secrets.WA_PARENT_REPO }}
+        PR_HEADER="$(if [ "${PR_PARENT:-UNDEFINED}" == "UNDEFINED" ]; then echo "Project"; else echo "Sub-Project"; fi)"
+
+        if [ "${SLACK_URL:-UNDEFINED}" == "UNDEFINED" ]; then
+          echo "missing slack url variable"
+          exit
+        fi
+
+        curl -s -X POST -d "payload={
+            \"blocks\":[{
+              \"type\":\"header\",
+              \"text\":{
+                  \"type\":\"plain_text\",
+                  \"text\":\"PR APPROVED on $PR_HEADER $GITHUB_REPOSITORY\",
+                  \"emoji\":true
+                }
+              },{
+              \"type\":\"section\",
+              \"text\":{
+                \"type\":\"mrkdwn\",
+                \"text\":\"PR approved on $GITHUB_REPOSITORY by $GITHUB_ACTOR\"
+                },
+              \"accessory\":{
+                \"type\":\"button\",
+                \"text\":{
+                  \"type\":\"plain_text\",
+                  \"text\":\"Rebase PR\",
+                  \"emoji\":true
+                },
+                \"value\":\"click_me_pull\",
+                \"url\":\"$PR_REBASE_LINK\",
+                \"action_id\":\"button-action\"
+                }
+              }]
+            }" $SLACK_URL
+
+
+
