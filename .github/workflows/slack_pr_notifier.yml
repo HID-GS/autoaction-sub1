@@ -27,14 +27,14 @@ jobs:
               \"type\":\"header\",
               \"text\":{
                   \"type\":\"plain_text\",
-                  \"text\":\"PR on Project\",
+                  \"text\":\"PR on Sub-Project\",
                   \"emoji\":true
                 }
               },{
               \"type\":\"section\",
               \"text\":{
                 \"type\":\"mrkdwn\",
-                \"text\":\"New PR created on $GITHUB_REPOSITORY\"
+                \"text\":\"New PR created on $GITHUB_REPOSITORY by $GITHUB_ACTOR\"
                 },
               \"accessory\":{
                 \"type\":\"button\",
