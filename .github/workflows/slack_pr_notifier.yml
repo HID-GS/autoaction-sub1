@@ -16,6 +16,8 @@ jobs:
         env | sort
         PR=$(echo ${GITHUB_REF} | sed 's#refs/pull/\([0-9]*\)/merge#\1#g')
         PR_LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/pull/${PR}/files#submit-review"
+        PR_PARENT=${{ secrets.WA_PARENT_REPO }}
+        PR_HEADER="$(if [ "${PR_PARENT:-UNDEFINED}" == "UNDEFINED" ]; then echo "Project"; else echo "Sub-Project"; fi)"
 
         if [ "${SLACK_URL:-UNDEFINED}" == "UNDEFINED" ]; then
           echo "missing slack url variable"
@@ -27,7 +29,7 @@ jobs:
               \"type\":\"header\",
               \"text\":{
                   \"type\":\"plain_text\",
-                  \"text\":\"PR on Sub-Project\",
+                  \"text\":\"PR on $PR_HEADER $GITHUB_REPOSITORY\",
                   \"emoji\":true
                 }
               },{
