@@ -6,12 +6,12 @@ on:
 
 jobs:
   slack-pr-notify:
-    if: github.event.pull_request.merged == 'true'
     runs-on: ubuntu-latest
     steps:
     - name: Dump context
       uses: crazy-max/ghaction-dump-context@v1
     - name: Notify via Slack
+      if: github.event.pull_request.merged == 'true'
       env:
         SLACK_URL: ${{ secrets.SLACK_URL }}
       run: |
