@@ -1,0 +1,77 @@
+name: APRoP Responder
+
+on: [repository_dispatch]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  auto-pr:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'aprop-pr-merged'
+    steps:
+      - name: Dump context
+        uses: crazy-max/ghaction-dump-context@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      - name: Checkout submodule
+        uses: actions/checkout@v2
+        with:
+          path: ${{ github.event.client_payload.repository }}
+          repository: hid-gs/${{ github.event.client_payload.repository }}
+          ref: ${{ github.event.client_payload.sha }}
+      - name: Check for pre-existing PR on same submodule
+        run: |
+          echo "check for pending PRs"
+          git fetch --all
+          # find hex for existing Merge PR numbers
+          git ls-remote 2> /dev/null | \
+            sed -ne 's#.*refs/pull/\([0-9]*\)/merge.*#\1#gp' | \
+            while read MERGE_PR; do \
+              # find hex for equivalent Pull PRs
+              PULL_HEX=$(git ls-remote 2> /dev/null | \
+                grep "refs/pull/$MERGE_PR/head" | \
+                awk '{print $1}')
+              # find files changed
+              echo "getting status for $PULL_HEX"
+              COMMIT_CHANGED=$(git show --name-status $PULL_HEX 2> /dev/null | \
+                awk '$0 ~ /^[AMD]\t/ {print $2}')
+              if [ $COMMIT_CHANGED == ${{ github.event.client_payload.repository }} ]; then
+                echo "$PULL_HEX changes $COMMIT_CHANGED, zapping PR $MERGE_PR"
+                git show-ref | \
+                  sed -ne "s#^${PULL_HEX}.*refs/remotes/origin/\(.*\)#\1#gp" | \
+                  while read PULL_BRANCH; do
+                    echo "${PULL_HEX} used by branch ${PULL_BRANCH}"
+                    git push origin :${PULL_BRANCH}
+                  done
+              fi
+            done
+          echo "done"
+      - name: APRoP Create Branch
+        run: |
+          cd ${{ github.event.client_payload.repository }}; \
+          git fetch --all; \
+          git log; \
+          cd ..; \
+          git config --global user.name 'Github Automation'; \
+          git config --global user.email 'webteam@hidglobal.com'; \
+          git add ${{ github.event.client_payload.repository }}; \
+          git commit --author 'Github Automation <webteam@hidglobal.com>' -m "Auto update ${{ github.event.client_payload.repository }} submodule"; 
+          BRANCHNAME="${{ github.event.client_payload.repository }}__update__${GITHUB_SHA}"
+          git checkout -b ${BRANCHNAME}; \
+          git push -u origin ${BRANCHNAME}
+      - name: APRoP Create PR
+        uses: devops-infra/action-pull-request@v0.4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          target_branch: main
+          title: Automated PR - ${{ github.event.client_payload.repository }} - ${{ github.event.client_payload.sha }}
+          body: |
+            ***Automated pull request***
+
+            Origin Repository: ${{ github.event.client_payload.repository }}
+            Origin Commit: ${{ github.event.client_payload.sha }}
+
