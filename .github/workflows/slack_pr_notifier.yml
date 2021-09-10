@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  slack-pr-notify:
+  slack-pr-merge-notify:
     runs-on: ubuntu-latest
     steps:
     - name: Dump context
