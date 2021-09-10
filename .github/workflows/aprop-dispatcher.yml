@@ -8,21 +8,8 @@ jobs:
   auto-pr:
     runs-on: ubuntu-latest
     steps:
-    - name: Always run
-      run: |
-        echo "event ${GITHUB_EVENT_NAME}"
-        echo "state ${{ github.event.pull_request.state }}"
-        echo "number ${{ github.event.pull_request.number }}"
-        echo "sha1 ${{ github.event.pull_request.merged_commit_sha }}"
-        echo "sha2 ${GITHUB_SHA}"
-        echo "sha3 ${{ github.event.pull_request.head.sha }}"
-        echo "sha4 ${{ github.event.pull_request.base.sha }}"
-        echo "title ${{ github.event.pull_request.title }}"
-        echo "merged ${{ github.event.pull_request.merged }}"
-        echo "commits ${{ github.event.pull_request.commits }}"
-        echo "ref ${{ github.event.pull_request.base.ref }}"
-        echo "merged: ${{ github.event.pull_request.merged }}"
-        echo "base: ${{ github.event.pull_request.base.ref }}"
+    - name: Dump context
+      uses: crazy-max/ghaction-dump-context@v1
     - name: APRoP Notify Parent
       if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' }}
       run: |
